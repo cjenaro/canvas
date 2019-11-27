@@ -19,8 +19,8 @@
       .input-group {
         position: absolute;
         left: 50%;
-        width: 400px;
-        margin-left: -200px;
+        width: 300px;
+        margin-left: -165px;
         top: 0;
         pointer-events: all;
         display: inline-block;
@@ -68,6 +68,10 @@
       let lastY = 0
 
       function draw(e) {
+        console.log(isDrawing)
+        e.preventDefault()
+        e.stopPropagation()
+
         if (!isDrawing) return
 
         ctx.beginPath()
@@ -88,6 +92,24 @@
       canvas.addEventListener('mouseout', () =>
         setTimeout(() => (isDrawing = false), 1000)
       )
+
+      canvas.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0]
+        const mouseDownEvent = new MouseEvent('mousedown', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+        })
+        canvas.dispatchEvent(mouseDownEvent)
+      }, false)
+
+      canvas.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0]
+        const mouseMoveEvent = new MouseEvent('mousemove', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+        })
+        canvas.dispatchEvent(mouseMoveEvent)
+      }, false)
     </script>
   </body>
 </html>
